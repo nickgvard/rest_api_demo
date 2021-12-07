@@ -27,14 +27,21 @@
         <hibernate>5.6.0.Final</hibernate>
         <flyway>8.0.5</flyway>
         <servlet>4.0.1</servlet>
-        <db.driver>org.postgresql.Driver</db.driver>
-        <db.url>jdbc:postgresql://localhost:5432/postgres</db.url>
-        <db.username>postgres</db.username>
-        <db.password>postgres</db.password>
-        <db.schema>public</db.schema>
+        <mysql>8.0.27</mysql>
+
+        <db.driver>com.mysql.cj.jdbc.Driver</db.driver>
+        <db.url>jdbc:mysql://localhost:3306/local_db</db.url>
+        <db.username>admin</db.username>
+        <db.password>admin</db.password>
+        <db.schema>local_db</db.schema>
     </properties>
 
     <dependencies>
+        <dependency>
+            <groupId>mysql</groupId>
+            <artifactId>mysql-connector-java</artifactId>
+            <version>${mysql}</version>
+        </dependency>
         <dependency>
             <groupId>junit</groupId>
             <artifactId>junit</artifactId>
