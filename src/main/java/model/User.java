@@ -9,7 +9,6 @@ import java.util.List;
  * email gvardeev@po-korf.ru
  */
 
-@NoArgsConstructor
 @Builder
 @Getter
 @Setter
