@@ -29,6 +29,7 @@
         <servlet>4.0.1</servlet>
         <mysql>8.0.27</mysql>
         <json>2.8.5</json>
+        <tomcat>2.2</tomcat>
 
         <db.driver>com.mysql.cj.jdbc.Driver</db.driver>
         <db.url>jdbc:mysql://localhost:3306/local_db</db.url>
@@ -75,6 +76,15 @@
     <build>
         <finalName>RESTAPIDemo</finalName>
         <plugins>
+            <plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <version>${tomcat}</version>
+                <configuration>
+                    <path>/</path>
+                    <port>8088</port>
+                </configuration>
+            </plugin>
             <plugin>
                 <groupId>org.flywaydb</groupId>
                 <artifactId>flyway-maven-plugin</artifactId>
