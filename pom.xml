@@ -13,8 +13,7 @@
 
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <compiler.source>1.8</compiler.source>
-        <compiler.target>1.8</compiler.target>
+        <compiler>1.8</compiler>
         <clean.plugin>3.1.0</clean.plugin>
         <res.plugin>3.0.2</res.plugin>
         <comp.plugin>3.8.0</comp.plugin>
@@ -103,8 +102,8 @@
                 <artifactId>maven-compiler-plugin</artifactId>
                 <version>${comp.plugin}</version>
                 <configuration>
-                    <source>${compiler.source}</source>
-                    <target>${compiler.target}</target>
+                    <source>${compiler}</source>
+                    <target>${compiler}</target>
                     <annotationProcessorPaths>
                         <path>
                             <groupId>org.projectlombok</groupId>

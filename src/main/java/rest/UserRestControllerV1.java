@@ -1,18 +1,22 @@
-package servlet;
+package rest;
 
 import com.google.gson.Gson;
-import controller.UserController;
-import model.User;
+import dto.UserDto;
+import dto.mapper.UserMapper;
+import entity.UserEntity;
+import service.UserService;
 import util.ServletUtil;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import static javax.servlet.http.HttpServletResponse.*;
 
@@ -20,50 +24,50 @@ import static javax.servlet.http.HttpServletResponse.*;
  * @author Nikita Gvardeev
  * 07.12.2021
  */
-public class UserServlet extends HttpServlet {
+/**
+http:www.example.com/developer/v2/resource
+http:www.developer.example.com/v1/resource
+ */
+@WebServlet(urlPatterns = "/storage/v1/users")
+public class UserRestControllerV1 extends HttpServlet {
 
     private static final Gson GSON = new Gson();
-    private UserController userController;
+    private UserService userService;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
-        userController = new UserController();
+        userService = new UserService();
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String requestUrl = req.getRequestURI();
 
-        //getById();
-        if (Pattern.compile("/users/\\d+$").matcher(requestUrl).find()) {
+        if (Pattern.compile("/api/v1/users/\\d+$").matcher(requestUrl).find()) {
             Long id = Long.parseLong(requestUrl.substring("/users/".length()));
 
-            User user =
-                    userController.getById(id);
+            UserDto userDto = UserMapper
+                    .userDto(
+                            userService.getById(id));
 
-            if (user != null) {
-                String json = GSON.toJson(user);
-
-                resp.setStatus(SC_OK);
-                resp.setContentType("application/json");
-                resp.getOutputStream().println(json);
-            } else
-                resp.setStatus(SC_NO_CONTENT);
-        }
-        //findAll();
-        else if (Pattern.compile("/users$").matcher(requestUrl).find()) {
-            List<User> users =
-                    userController.findAll();
-
-            if (users != null) {
-                String json = GSON.toJson(users);
+            if (userDto != null) {
+                String json = GSON.toJson(userDto);
 
                 resp.setStatus(SC_OK);
                 resp.setContentType("application/json");
                 resp.getOutputStream().println(json);
             } else
                 resp.setStatus(SC_NO_CONTENT);
+        } else if (Pattern.compile("/users$").matcher(requestUrl).find()) {
+
+            List<UserEntity> userEntities = userService.findAll();
+
+            String json = GSON.toJson(userEntities);
+
+            resp.setStatus(SC_OK);
+            resp.setContentType("application/json");
+            resp.getOutputStream().println(json);
         }
     }
 
@@ -71,10 +75,10 @@ public class UserServlet extends HttpServlet {
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
         String json = ServletUtil.fromServletInputStream(req.getInputStream());
 
-        User user = GSON.fromJson(json, User.class);
+        UserEntity userEntity = GSON.fromJson(json, UserEntity.class);
 
         String saved = GSON.toJson(
-                userController.save(user));
+                userService.save(userEntity));
 
         resp.setStatus(SC_CREATED);
         resp.setContentType("application/json");
@@ -89,15 +93,15 @@ public class UserServlet extends HttpServlet {
 
         String json = ServletUtil.fromServletInputStream(req.getInputStream());
 
-        User user = GSON.fromJson(json, User.class);
-        user.setId(id);
+        UserEntity userEntity = GSON.fromJson(json, UserEntity.class);
+        userEntity.setId(id);
 
-        userController.update(user);
+        userService.update(userEntity);
 
         resp.setStatus(SC_OK);
         resp.setContentType("application/json");
         resp.getOutputStream().println(
-                GSON.toJson(user));
+                GSON.toJson(userEntity));
     }
 
     @Override
@@ -106,12 +110,12 @@ public class UserServlet extends HttpServlet {
 
         Long id = Long.parseLong(requestUri.substring("/users/".length()));
 
-        User user =
-                userController.deleteById(id);
+        UserEntity userEntity =
+                userService.deleteById(id);
 
         resp.setStatus(SC_OK);
         resp.setContentType("application/json");
         resp.getOutputStream().println(
-                GSON.toJson(user));
+                GSON.toJson(userEntity));
     }
 }

@@ -1,8 +1,8 @@
-package servlet;
+package rest;
 
 /**
  * @author Nikita Gvardeev
  * 07.12.2021
  */
-public class EventServlet {
+public class FileRestControllerV1 {
 }

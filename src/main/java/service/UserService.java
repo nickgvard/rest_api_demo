@@ -1,7 +1,7 @@
 package service;
 
-import model.User;
-import repository.hibernate.UserRepositoryImpl;
+import entity.UserEntity;
+import repository.hibernate.HibernateUserRepositoryImpl;
 
 import java.util.List;
 
@@ -11,29 +11,29 @@ import java.util.List;
  */
 public class UserService {
 
-    private final UserRepositoryImpl userRepository;
+    private final HibernateUserRepositoryImpl userRepository;
 
     public UserService() {
-        userRepository = new UserRepositoryImpl();
+        userRepository = new HibernateUserRepositoryImpl();
     }
 
-    public List<User> findAll() {
+    public List<UserEntity> findAll() {
         return userRepository.findAll();
     }
 
-    public User getById(Long id) {
+    public UserEntity getById(Long id) {
         return userRepository.getById(id);
     }
 
-    public User save(User user) {
-        return userRepository.save(user);
+    public UserEntity save(UserEntity userEntity) {
+        return userRepository.save(userEntity);
     }
 
-    public void update(User user) {
-        userRepository.update(user);
+    public UserEntity update(UserEntity userEntity) {
+        return userRepository.update(userEntity);
     }
 
-    public User deleteById(Long id) {
+    public UserEntity deleteById(Long id) {
         return userRepository.deleteById(id);
     }
 }

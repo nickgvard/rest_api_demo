@@ -1,10 +1,10 @@
 package repository;
 
-import model.User;
+import entity.UserEntity;
 
 /**
  * @author Nikita Gvardeev
  * 07.12.2021
  */
-public interface UserRepository extends GenericRepository<User, Long> {
+public interface UserRepository extends GenericRepository<UserEntity, Long> {
 }
