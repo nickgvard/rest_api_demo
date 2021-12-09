@@ -77,15 +77,6 @@
         <finalName>RESTAPIDemo</finalName>
         <plugins>
             <plugin>
-                <groupId>org.apache.tomcat.maven</groupId>
-                <artifactId>tomcat7-maven-plugin</artifactId>
-                <version>${tomcat}</version>
-                <configuration>
-                    <path>/</path>
-                    <port>8088</port>
-                </configuration>
-            </plugin>
-            <plugin>
                 <groupId>org.flywaydb</groupId>
                 <artifactId>flyway-maven-plugin</artifactId>
                 <version>${flyway}</version>
@@ -138,6 +129,15 @@
             <plugin>
                 <artifactId>maven-deploy-plugin</artifactId>
                 <version>${deploy.plugin}</version>
+            </plugin>
+            <plugin>
+                <groupId>org.apache.tomcat.maven</groupId>
+                <artifactId>tomcat7-maven-plugin</artifactId>
+                <version>${tomcat}</version>
+                <configuration>
+                    <path>/</path>
+                    <port>8088</port>
+                </configuration>
             </plugin>
         </plugins>
     </build>

@@ -25,10 +25,6 @@ public class UserService {
         return userRepository.getById(id);
     }
 
-    public User getByUserName(String name) {
-        return userRepository.getByUserName(name);
-    }
-
     public User save(User user) {
         return userRepository.save(user);
     }
@@ -37,7 +33,7 @@ public class UserService {
         userRepository.update(user);
     }
 
-    public void deleteById(Long id) {
-        userRepository.deleteById(id);
+    public User deleteById(Long id) {
+        return userRepository.deleteById(id);
     }
 }

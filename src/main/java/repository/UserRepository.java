@@ -7,5 +7,4 @@ import model.User;
  * 07.12.2021
  */
 public interface UserRepository extends GenericRepository<User, Long> {
-    User getByUserName(String name);
 }

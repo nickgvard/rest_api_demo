@@ -12,5 +12,5 @@ public interface GenericRepository<T, ID> {
     List<T> findAll();
     T save(T entity);
     void update(T entity);
-    void deleteById(ID id);
+    T deleteById(ID id);
 }

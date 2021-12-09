@@ -1,6 +1,7 @@
 package model;
 
 import lombok.*;
+import lombok.experimental.SuperBuilder;
 
 import java.util.List;
 
@@ -9,14 +10,17 @@ import java.util.List;
  * email gvardeev@po-korf.ru
  */
 
-@Builder
+@NoArgsConstructor
+@RequiredArgsConstructor
 @Getter
 @Setter
 @ToString
 public class User {
 
+    @NonNull
     private Long id;
 
+    @NonNull
     private String name;
 
     private List<Event> events;

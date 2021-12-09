@@ -3,6 +3,8 @@ package repository.hibernate;
 import model.User;
 import repository.UserRepository;
 
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 /**
@@ -10,11 +12,6 @@ import java.util.List;
  * 07.12.2021
  */
 public class UserRepositoryImpl implements UserRepository {
-
-    @Override
-    public User getByUserName(String name) {
-        return null;
-    }
 
     @Override
     public User getById(Long id) {
@@ -37,7 +34,7 @@ public class UserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public void deleteById(Long id) {
-
+    public User deleteById(Long id) {
+        return null;
     }
 }

@@ -25,10 +25,6 @@ public class UserController {
         return userService.getById(id);
     }
 
-    public User getByUserName(String name) {
-        return userService.getByUserName(name);
-    }
-
     public User save(User user) {
         return userService.save(user);
     }
@@ -37,8 +33,7 @@ public class UserController {
         userService.update(user);
     }
 
-    public void delete(Long id) {
-        userService.deleteById(id);
+    public User deleteById(Long id) {
+        return userService.deleteById(id);
     }
-
 }
