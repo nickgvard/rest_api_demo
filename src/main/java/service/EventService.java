@@ -1,8 +1,9 @@
 package service;
 
+import entity.EventEntity;
+
 /**
- * @author Nikita Gvardeev
- * 07.12.2021
+ * @author Nikita Gvardeev 10.12.2021
+ * email gvardeev@po-korf.ru
  */
-public class EventService {
-}
+public interface EventService extends GenericService<EventEntity, Long> { }

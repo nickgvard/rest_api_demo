@@ -1,16 +1,16 @@
-package entity;
+package dto;
 
 import lombok.Builder;
 import lombok.Data;
 
 /**
- * @author Nikita Gvardeev 07.12.2021
+ * @author Nikita Gvardeev 10.12.2021
  * email gvardeev@po-korf.ru
  */
+
 @Data
 @Builder
-public class FileEntity {
+public class FileDto {
 
-    private Long id;
     private String name;
 }
