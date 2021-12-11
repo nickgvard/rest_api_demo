@@ -1,4 +1,4 @@
-package dto;
+package dto.filedto;
 
 import lombok.Builder;
 import lombok.Data;

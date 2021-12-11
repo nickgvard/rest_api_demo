@@ -1,10 +1,7 @@
-package dto;
+package dto.userdto;
 
-import entity.EventEntity;
 import lombok.Builder;
 import lombok.Data;
-
-import java.util.List;
 
 /**
  * @author Nikita Gvardeev
@@ -12,8 +9,7 @@ import java.util.List;
  */
 @Data
 @Builder
-public class UserDto {
+public class UserCreationDto {
 
     private String name;
-    private List<EventEntity> eventEntities;
 }

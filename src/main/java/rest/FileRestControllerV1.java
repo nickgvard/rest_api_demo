@@ -1,10 +1,10 @@
 package rest;
 
 import com.google.gson.Gson;
-import dto.FileDto;
-import dto.mapper.FileMapper;
+import dto.filedto.FileDto;
+import dto.mapper.FileEntityMapper;
 import entity.FileEntity;
-import service.FileService;
+import service.implementation.FileServiceImpl;
 import util.ServletUtil;
 
 import javax.servlet.ServletConfig;
@@ -24,28 +24,32 @@ import static javax.servlet.http.HttpServletResponse.*;
  * 07.12.2021
  */
 
-@WebServlet(name = "FileRestControllerV1", urlPatterns = "/storage/v1/files/")
+@WebServlet(name = "FileRestControllerV1", urlPatterns = "/storage/v1/files/*")
 public class FileRestControllerV1 extends HttpServlet {
 
     private Gson gson;
-    private FileService fileService;
+    private FileServiceImpl fileServiceImpl;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         gson = new Gson();
-        fileService = new FileService();
+        fileServiceImpl = new FileServiceImpl();
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String requestUrl = req.getRequestURI();
 
-        if (Pattern.compile("/files/\\d+$").matcher(requestUrl).find()) {
-            Long id = Long.parseLong(requestUrl.substring("/storage/v1/files/".length()));
+        String requestUri = req.getRequestURI();
 
-            FileDto fileDto = FileMapper.toFileDto(
-                    fileService
+        if (Pattern.compile("/files/\\d+$").matcher(requestUri).find()) {
+
+            String pathInfo = req.getPathInfo();
+
+            Long id = Long.parseLong(pathInfo.substring(1));
+
+            FileDto fileDto = FileEntityMapper.toFileDto(
+                    fileServiceImpl
                             .getById(id));
 
             if (fileDto != null) {
@@ -56,28 +60,30 @@ public class FileRestControllerV1 extends HttpServlet {
                 resp.getOutputStream().println(toJson);
             } else
                 resp.setStatus(SC_NO_CONTENT);
-        } else if (Pattern.compile("/files$").matcher(requestUrl).find()) {
+        } else if (Pattern.compile("/files$").matcher(requestUri).find()) {
 
-            List<FileEntity> fileEntities = fileService.findAll();
+            List<FileEntity> fileEntities = fileServiceImpl.findAll();
 
             String toJson = gson.toJson(fileEntities);
 
             resp.setStatus(SC_OK);
             resp.setContentType("application/json");
             resp.getOutputStream().println(toJson);
-        }
+        } else
+            resp.setStatus(SC_BAD_REQUEST);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
         String requestUri = req.getRequestURI();
 
         FileDto fileDto = gson.fromJson(requestUri, FileDto.class);
 
-        FileEntity fileEntity = FileMapper.toFile(fileDto);
+        FileEntity fileEntity = FileEntityMapper.toFileEntity(fileDto);
 
         String toJson = gson.toJson(
-                fileService
+                fileServiceImpl
                         .save(fileEntity));
 
         resp.setStatus(SC_CREATED);
@@ -87,37 +93,57 @@ public class FileRestControllerV1 extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
         String requestUri = req.getRequestURI();
 
-        Long id = Long.parseLong(requestUri.substring("/storage/v1/files/".length()));
+        if (Pattern.compile("/files/\\d+$").matcher(requestUri).find()) {
 
-        String fromJson = ServletUtil.fromServletInputStream(req.getInputStream());
+            String pathInfo = req.getPathInfo();
 
-        FileEntity fileEntity = gson.fromJson(fromJson, FileEntity.class);
-        fileEntity.setId(id);
+            Long id = Long.parseLong(pathInfo.substring(1));
 
-        String toJson = gson.toJson(
-                fileService
-                        .update(fileEntity));
+            String fromJson = ServletUtil.fromServletInputStream(req.getInputStream());
 
-        resp.setStatus(SC_OK);
-        resp.setContentType("application/json");
-        resp.getOutputStream().println(toJson);
+            FileEntity fileEntity = gson.fromJson(fromJson, FileEntity.class);
+            fileEntity.setId(id);
+
+            FileDto fileDto = FileEntityMapper
+                    .toFileDto(
+                            fileServiceImpl
+                                    .update(fileEntity));
+
+            String toJson = gson.toJson(fileDto);
+
+            resp.setStatus(SC_OK);
+            resp.setContentType("application/json");
+            resp.getOutputStream().println(toJson);
+        } else
+            resp.setStatus(SC_BAD_REQUEST);
     }
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        String requestUrl = req.getRequestURI();
 
-        Long id = Long.parseLong(requestUrl.substring("/storage/v1/files/".length()));
+        String requestUri = req.getRequestURI();
 
-        FileEntity fileEntity =
-                fileService.deleteById(id);
+        if (Pattern.compile("/files/\\d+$").matcher(requestUri).find()) {
 
-        String toJson = gson.toJson(fileEntity);
+            String pathInfo = req.getPathInfo();
 
-        resp.setStatus(SC_OK);
-        resp.setContentType("application/json");
-        resp.getOutputStream().println(toJson);
+            Long id = Long.parseLong(pathInfo.substring(1));
+
+            FileEntity fileEntity =
+                    fileServiceImpl.deleteById(id);
+
+            FileDto fileDto = FileEntityMapper
+                    .toFileDto(fileEntity);
+
+            String toJson = gson.toJson(fileDto);
+
+            resp.setStatus(SC_OK);
+            resp.setContentType("application/json");
+            resp.getOutputStream().println(toJson);
+        } else
+            resp.setStatus(SC_BAD_REQUEST);
     }
 }

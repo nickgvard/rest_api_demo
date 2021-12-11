@@ -1,8 +1,8 @@
 package dto.mapper;
 
-import dto.UserCreationDto;
-import dto.UserDto;
-import dto.UserIdDto;
+import dto.userdto.UserCreationDto;
+import dto.userdto.UserDto;
+import dto.userdto.UserIdDto;
 import entity.UserEntity;
 
 import java.util.ArrayList;
@@ -11,14 +11,7 @@ import java.util.ArrayList;
  * @author Nikita Gvardeev
  * 09.12.2021
  */
-public class UserMapper {
-
-    public static UserCreationDto userCreationDto(UserEntity userEntity) {
-        return UserCreationDto
-                .builder()
-                .name(userEntity.getName())
-                .build();
-    }
+public class UserEntityMapper {
 
     public static UserIdDto userIdDto(UserEntity userEntity) {
         return UserIdDto
@@ -28,7 +21,7 @@ public class UserMapper {
                 .build();
     }
 
-    public static UserDto userDto(UserEntity userEntity) {
+    public static UserDto toUserDto(UserEntity userEntity) {
         return UserDto
                 .builder()
                 .name(userEntity.getName())
@@ -36,7 +29,7 @@ public class UserMapper {
                 .build();
     }
 
-    public static UserEntity toUser(UserCreationDto userCreationDto) {
+    public static UserEntity userEntity(UserCreationDto userCreationDto) {
         return UserEntity
                 .builder()
                 .name(userCreationDto.getName())

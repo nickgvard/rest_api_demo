@@ -1,11 +1,12 @@
 package rest;
 
 import com.google.gson.Gson;
-import dto.UserCreationDto;
-import dto.UserDto;
-import dto.mapper.UserMapper;
+import dto.userdto.UserCreationDto;
+import dto.userdto.UserDto;
+import dto.mapper.UserEntityMapper;
+import dto.userdto.UserIdDto;
 import entity.UserEntity;
-import service.UserService;
+import service.implementation.UserServiceImpl;
 import util.ServletUtil;
 
 import javax.servlet.ServletConfig;
@@ -25,28 +26,32 @@ import static javax.servlet.http.HttpServletResponse.*;
  * 07.12.2021
  */
 
-@WebServlet(name = "UserRestControllerV1", urlPatterns = "/storage/v1/users/")
+@WebServlet(name = "UserRestControllerV1", urlPatterns = {"/storage/v1/users/*"})
 public class UserRestControllerV1 extends HttpServlet {
 
     private Gson gson;
-    private UserService userService;
+    private UserServiceImpl userService;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         gson = new Gson();
-        userService = new UserService();
+        userService = new UserServiceImpl();
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
         String requestUrl = req.getRequestURI();
 
         if (Pattern.compile("/users/\\d+$").matcher(requestUrl).find()) {
-            Long id = Long.parseLong(requestUrl.substring("/storage/users/".length()));
 
-            UserDto userDto = UserMapper
-                    .userDto(
+            String pathInfo = req.getPathInfo();
+
+            Long id = Long.parseLong(pathInfo.substring(1));
+
+            UserDto userDto = UserEntityMapper
+                    .toUserDto(
                             userService.getById(id));
 
             if (userDto != null) {
@@ -57,7 +62,7 @@ public class UserRestControllerV1 extends HttpServlet {
                 resp.getOutputStream().println(json);
             } else
                 resp.setStatus(SC_NO_CONTENT);
-        } else if (Pattern.compile("/users$").matcher(requestUrl).find()) {
+        } else if (Pattern.compile("/users(/)*$").matcher(requestUrl).find()) {
 
             List<UserEntity> userEntities = userService.findAll();
 
@@ -66,23 +71,25 @@ public class UserRestControllerV1 extends HttpServlet {
             resp.setStatus(SC_OK);
             resp.setContentType("application/json");
             resp.getOutputStream().println(json);
-        }
+        } else
+            resp.setStatus(SC_BAD_REQUEST);
     }
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
         String fromJson = ServletUtil.fromServletInputStream(req.getInputStream());
 
         UserCreationDto userDto = gson.fromJson(fromJson, UserCreationDto.class);
 
-        UserEntity userEntity = UserMapper.toUser(userDto);
+        UserEntity userEntity = UserEntityMapper.userEntity(userDto);
 
-        String toJson = gson
-                .toJson(
-                        UserMapper
-                                .userIdDto(
-                                        userService
-                                                .save(userEntity)));
+        UserIdDto userIdDto = UserEntityMapper
+                .userIdDto(
+                        userService
+                                .save(userEntity));
+
+        String toJson = gson.toJson(userIdDto);
 
         resp.setStatus(SC_CREATED);
         resp.setContentType("application/json");
@@ -91,37 +98,57 @@ public class UserRestControllerV1 extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
         String requestUri = req.getRequestURI();
 
-        Long id = Long.parseLong(requestUri.substring("/storage/v1/users/".length()));
+        if (Pattern.compile("/users/\\d+$").matcher(requestUri).find()) {
 
-        String fromJson = ServletUtil.fromServletInputStream(req.getInputStream());
+            String pathInfo = req.getPathInfo();
 
-        UserEntity userEntity = gson.fromJson(fromJson, UserEntity.class);
-        userEntity.setId(id);
+            Long id = Long.parseLong(pathInfo.substring(1));
 
-        String toJson = gson.toJson(
-                userService
-                        .update(userEntity));
+            String fromJson = ServletUtil.fromServletInputStream(req.getInputStream());
 
-        resp.setStatus(SC_OK);
-        resp.setContentType("application/json");
-        resp.getOutputStream().println(toJson);
+            UserEntity userEntity = gson.fromJson(fromJson, UserEntity.class);
+            userEntity.setId(id);
+
+            UserDto userDto = UserEntityMapper
+                    .toUserDto(
+                            userService
+                                    .update(userEntity));
+
+            String toJson = gson.toJson(userDto);
+
+            resp.setStatus(SC_OK);
+            resp.setContentType("application/json");
+            resp.getOutputStream().println(toJson);
+        } else
+            resp.setStatus(SC_BAD_REQUEST);
     }
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
         String requestUri = req.getRequestURI();
 
-        Long id = Long.parseLong(requestUri.substring("/storage/v1/users/".length()));
+        if (Pattern.compile("/users/\\d+$").matcher(requestUri).find()) {
 
-        UserEntity userEntity =
-                userService.deleteById(id);
+            String pathInfo = req.getPathInfo();
 
-        String toJson = gson.toJson(userEntity);
+            Long id = Long.parseLong(pathInfo.substring(1));
 
-        resp.setStatus(SC_OK);
-        resp.setContentType("application/json");
-        resp.getOutputStream().println(toJson);
+            UserEntity userEntity =
+                    userService.deleteById(id);
+
+            UserDto userDto = UserEntityMapper
+                    .toUserDto(userEntity);
+
+            String toJson = gson.toJson(userDto);
+
+            resp.setStatus(SC_OK);
+            resp.setContentType("application/json");
+            resp.getOutputStream().println(toJson);
+        } else
+            resp.setStatus(SC_BAD_REQUEST);
     }
 }
