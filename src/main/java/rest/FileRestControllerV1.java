@@ -1,7 +1,7 @@
 package rest;
 
 import com.google.gson.Gson;
-import dto.filedto.FileDto;
+import dto.filedto.FileDTO;
 import dto.mapper.FileEntityMapper;
 import entity.FileEntity;
 import service.implementation.FileServiceImpl;
@@ -48,7 +48,7 @@ public class FileRestControllerV1 extends HttpServlet {
 
             Long id = Long.parseLong(pathInfo.substring(1));
 
-            FileDto fileDto = FileEntityMapper.toFileDto(
+            FileDTO fileDto = FileEntityMapper.toFileDto(
                     fileServiceImpl
                             .getById(id));
 
@@ -78,7 +78,7 @@ public class FileRestControllerV1 extends HttpServlet {
 
         String requestUri = req.getRequestURI();
 
-        FileDto fileDto = gson.fromJson(requestUri, FileDto.class);
+        FileDTO fileDto = gson.fromJson(requestUri, FileDTO.class);
 
         FileEntity fileEntity = FileEntityMapper.toFileEntity(fileDto);
 
@@ -107,7 +107,7 @@ public class FileRestControllerV1 extends HttpServlet {
             FileEntity fileEntity = gson.fromJson(fromJson, FileEntity.class);
             fileEntity.setId(id);
 
-            FileDto fileDto = FileEntityMapper
+            FileDTO fileDto = FileEntityMapper
                     .toFileDto(
                             fileServiceImpl
                                     .update(fileEntity));
@@ -135,7 +135,7 @@ public class FileRestControllerV1 extends HttpServlet {
             FileEntity fileEntity =
                     fileServiceImpl.deleteById(id);
 
-            FileDto fileDto = FileEntityMapper
+            FileDTO fileDto = FileEntityMapper
                     .toFileDto(fileEntity);
 
             String toJson = gson.toJson(fileDto);

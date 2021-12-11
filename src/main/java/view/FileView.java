@@ -1,8 +1,9 @@
 package view;
 
+import entity.FileEntity;
+
 /**
  * @author Nikita Gvardeev
- * 07.12.2021
+ * 11.12.2021
  */
-public class FileView {
-}
+public interface FileView extends GenericView<FileEntity, Long> { }

@@ -1,10 +1,10 @@
 package rest;
 
 import com.google.gson.Gson;
-import dto.userdto.UserCreationDto;
-import dto.userdto.UserDto;
+import dto.userdto.UserCreationDTO;
+import dto.userdto.UserDTO;
 import dto.mapper.UserEntityMapper;
-import dto.userdto.UserIdDto;
+import dto.userdto.UserIdDTO;
 import entity.UserEntity;
 import service.implementation.UserServiceImpl;
 import util.ServletUtil;
@@ -50,7 +50,7 @@ public class UserRestControllerV1 extends HttpServlet {
 
             Long id = Long.parseLong(pathInfo.substring(1));
 
-            UserDto userDto = UserEntityMapper
+            UserDTO userDto = UserEntityMapper
                     .toUserDto(
                             userService.getById(id));
 
@@ -80,11 +80,11 @@ public class UserRestControllerV1 extends HttpServlet {
 
         String fromJson = ServletUtil.fromServletInputStream(req.getInputStream());
 
-        UserCreationDto userDto = gson.fromJson(fromJson, UserCreationDto.class);
+        UserCreationDTO userDto = gson.fromJson(fromJson, UserCreationDTO.class);
 
         UserEntity userEntity = UserEntityMapper.userEntity(userDto);
 
-        UserIdDto userIdDto = UserEntityMapper
+        UserIdDTO userIdDto = UserEntityMapper
                 .userIdDto(
                         userService
                                 .save(userEntity));
@@ -112,7 +112,7 @@ public class UserRestControllerV1 extends HttpServlet {
             UserEntity userEntity = gson.fromJson(fromJson, UserEntity.class);
             userEntity.setId(id);
 
-            UserDto userDto = UserEntityMapper
+            UserDTO userDto = UserEntityMapper
                     .toUserDto(
                             userService
                                     .update(userEntity));
@@ -140,7 +140,7 @@ public class UserRestControllerV1 extends HttpServlet {
             UserEntity userEntity =
                     userService.deleteById(id);
 
-            UserDto userDto = UserEntityMapper
+            UserDTO userDto = UserEntityMapper
                     .toUserDto(userEntity);
 
             String toJson = gson.toJson(userDto);

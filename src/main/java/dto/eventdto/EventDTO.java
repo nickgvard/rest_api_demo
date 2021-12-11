@@ -1,5 +1,6 @@
 package dto.eventdto;
 
+import entity.FileEntity;
 import lombok.Builder;
 import lombok.Data;
 
@@ -9,8 +10,8 @@ import lombok.Data;
  */
 @Data
 @Builder
-public class EventIdDto {
+public class EventDTO {
 
-    private Long id;
     private String name;
+    private FileEntity fileEntity;
 }

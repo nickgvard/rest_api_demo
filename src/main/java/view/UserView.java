@@ -1,8 +1,9 @@
 package view;
 
+import entity.UserEntity;
+
 /**
  * @author Nikita Gvardeev
- * 07.12.2021
+ * 11.12.2021
  */
-public class UserView {
-}
+public interface UserView extends GenericView<UserEntity, Long> { }

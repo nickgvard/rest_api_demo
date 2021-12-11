@@ -1,6 +1,6 @@
 package dto.mapper;
 
-import dto.filedto.FileDto;
+import dto.filedto.FileDTO;
 import entity.FileEntity;
 
 /**
@@ -9,14 +9,14 @@ import entity.FileEntity;
  */
 public class FileEntityMapper {
 
-    public static FileDto toFileDto(FileEntity fileEntity) {
-        return FileDto
+    public static FileDTO toFileDto(FileEntity fileEntity) {
+        return FileDTO
                 .builder()
                 .name(fileEntity.getName())
                 .build();
     }
 
-    public static FileEntity toFileEntity(FileDto fileDto) {
+    public static FileEntity toFileEntity(FileDTO fileDto) {
         return FileEntity
                 .builder()
                 .name(fileDto.getName())

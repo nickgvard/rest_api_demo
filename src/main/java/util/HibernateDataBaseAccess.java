@@ -10,9 +10,9 @@ import org.hibernate.boot.registry.StandardServiceRegistryBuilder;
  * @author Nikita Gvardeev
  * 07.12.2021
  */
-public class HibernateDataBaseAccessImpl implements DataBaseAccess<Session> {
+public class HibernateDataBaseAccess implements DataBaseAccess<Session> {
 
-    private static final HibernateDataBaseAccessImpl ACCESS = new HibernateDataBaseAccessImpl();
+    private static final HibernateDataBaseAccess ACCESS = new HibernateDataBaseAccess();
     private static SessionFactory sessionFactory;
 
     static {
@@ -29,9 +29,9 @@ public class HibernateDataBaseAccessImpl implements DataBaseAccess<Session> {
         }
     }
 
-    private HibernateDataBaseAccessImpl() {}
+    private HibernateDataBaseAccess() {}
 
-    public static HibernateDataBaseAccessImpl instance() {
+    public static HibernateDataBaseAccess instance() {
         return ACCESS;
     }
 

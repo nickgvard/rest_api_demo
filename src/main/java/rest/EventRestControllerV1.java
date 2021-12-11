@@ -1,13 +1,11 @@
 package rest;
 
 import com.google.gson.Gson;
-import dto.eventdto.EventCreationDto;
-import dto.eventdto.EventDto;
-import dto.eventdto.EventIdDto;
+import dto.eventdto.EventCreationDTO;
+import dto.eventdto.EventDTO;
+import dto.eventdto.EventIdDTO;
 import dto.mapper.EventEntityMapper;
-import dto.mapper.FileEntityMapper;
 import entity.EventEntity;
-import entity.FileEntity;
 import service.implementation.EventServiceImpl;
 import util.ServletUtil;
 
@@ -52,7 +50,7 @@ public class EventRestControllerV1 extends HttpServlet {
 
             Long id = Long.parseLong(pathInfo.substring(1));
 
-            EventDto eventDto = EventEntityMapper.toEventDto(
+            EventDTO eventDto = EventEntityMapper.toEventDto(
                     eventService
                             .getById(id));
 
@@ -82,11 +80,11 @@ public class EventRestControllerV1 extends HttpServlet {
 
         String requestUri = req.getRequestURI();
 
-        EventCreationDto eventDto = gson.fromJson(requestUri, EventCreationDto.class);
+        EventCreationDTO eventDto = gson.fromJson(requestUri, EventCreationDTO.class);
 
         EventEntity eventEntity = EventEntityMapper.toEventEntity(eventDto);
 
-        EventIdDto eventIdDto = EventEntityMapper
+        EventIdDTO eventIdDto = EventEntityMapper
                 .toEventIdDto(
                         eventService
                                 .save(eventEntity));
@@ -114,7 +112,7 @@ public class EventRestControllerV1 extends HttpServlet {
             EventEntity eventEntity = gson.fromJson(fromJson, EventEntity.class);
             eventEntity.setId(id);
 
-            EventDto eventDto = EventEntityMapper
+            EventDTO eventDto = EventEntityMapper
                     .toEventDto(
                             eventService
                                     .update(eventEntity));
@@ -142,7 +140,7 @@ public class EventRestControllerV1 extends HttpServlet {
             EventEntity eventEntity =
                     eventService.deleteById(id);
 
-            EventDto eventDto = EventEntityMapper
+            EventDTO eventDto = EventEntityMapper
                     .toEventDto(eventEntity);
 
             String toJson = gson.toJson(eventDto);

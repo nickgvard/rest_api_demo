@@ -9,7 +9,8 @@ import lombok.Data;
  */
 @Data
 @Builder
-public class EventCreationDto {
+public class EventIdDTO {
 
+    private Long id;
     private String name;
 }

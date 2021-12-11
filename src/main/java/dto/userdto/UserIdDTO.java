@@ -1,7 +1,9 @@
 package dto.userdto;
 
+import dto.DTO;
 import lombok.Builder;
 import lombok.Data;
+import lombok.EqualsAndHashCode;
 
 /**
  * @author Nikita Gvardeev
@@ -9,7 +11,8 @@ import lombok.Data;
  */
 @Data
 @Builder
-public class UserIdDto {
+@EqualsAndHashCode(callSuper = true)
+public class UserIdDTO extends DTO {
 
     private Long id;
     private String name;

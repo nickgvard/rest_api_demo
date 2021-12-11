@@ -1,15 +1,15 @@
-package dto.userdto;
+package dto.eventdto;
 
 import lombok.Builder;
 import lombok.Data;
 
 /**
  * @author Nikita Gvardeev
- * 09.12.2021
+ * 11.12.2021
  */
 @Data
 @Builder
-public class UserCreationDto {
+public class EventCreationDTO {
 
     private String name;
 }

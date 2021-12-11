@@ -1,8 +1,8 @@
 package dto.mapper;
 
-import dto.eventdto.EventCreationDto;
-import dto.eventdto.EventDto;
-import dto.eventdto.EventIdDto;
+import dto.eventdto.EventCreationDTO;
+import dto.eventdto.EventDTO;
+import dto.eventdto.EventIdDTO;
 import entity.EventEntity;
 
 /**
@@ -11,23 +11,23 @@ import entity.EventEntity;
  */
 public class EventEntityMapper {
 
-    public static EventIdDto toEventIdDto(EventEntity eventEntity) {
-        return EventIdDto
+    public static EventIdDTO toEventIdDto(EventEntity eventEntity) {
+        return EventIdDTO
                 .builder()
                 .id(eventEntity.getId())
                 .name(eventEntity.getName())
                 .build();
     }
 
-    public static EventDto toEventDto(EventEntity eventEntity) {
-        return EventDto
+    public static EventDTO toEventDto(EventEntity eventEntity) {
+        return EventDTO
                 .builder()
                 .name(eventEntity.getName())
                 .fileEntity(eventEntity.getFileEntity())
                 .build();
     }
 
-    public static EventEntity toEventEntity(EventCreationDto eventDto) {
+    public static EventEntity toEventEntity(EventCreationDTO eventDto) {
         return EventEntity
                 .builder()
                 .name(eventDto.getName())

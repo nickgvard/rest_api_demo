@@ -1,8 +1,9 @@
 package view;
 
+import entity.EventEntity;
+
 /**
  * @author Nikita Gvardeev
- * 07.12.2021
+ * 11.12.2021
  */
-public class EventView {
-}
+public interface EventView extends GenericView<EventEntity, Long> { }

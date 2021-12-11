@@ -10,7 +10,7 @@ import lombok.Data;
 
 @Data
 @Builder
-public class FileDto {
+public class FileDTO {
 
     private String name;
 }
