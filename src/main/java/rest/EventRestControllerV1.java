@@ -78,11 +78,12 @@ public class EventRestControllerV1 extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        String requestUri = req.getRequestURI();
+        String name = req.getParameter("name");
 
-        EventCreationDTO eventDto = gson.fromJson(requestUri, EventCreationDTO.class);
-
-        EventEntity eventEntity = EventEntityMapper.toEventEntity(eventDto);
+        EventEntity eventEntity = EventEntity
+                .builder()
+                .name(name)
+                .build();
 
         EventIdDTO eventIdDto = EventEntityMapper
                 .toEventIdDto(

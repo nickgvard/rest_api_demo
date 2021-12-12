@@ -76,11 +76,12 @@ public class FileRestControllerV1 extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        String requestUri = req.getRequestURI();
+        String name = req.getParameter("name");
 
-        FileDTO fileDto = gson.fromJson(requestUri, FileDTO.class);
-
-        FileEntity fileEntity = FileEntityMapper.toFileEntity(fileDto);
+        FileEntity fileEntity = FileEntity
+                .builder()
+                .name(name)
+                .build();
 
         String toJson = gson.toJson(
                 fileServiceImpl

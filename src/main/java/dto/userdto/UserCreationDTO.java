@@ -1,6 +1,5 @@
 package dto.userdto;
 
-import dto.DTO;
 import lombok.Builder;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
@@ -11,8 +10,7 @@ import lombok.EqualsAndHashCode;
  */
 @Data
 @Builder
-@EqualsAndHashCode(callSuper = true)
-public class UserCreationDTO extends DTO {
+public class UserCreationDTO {
 
     private String name;
 }

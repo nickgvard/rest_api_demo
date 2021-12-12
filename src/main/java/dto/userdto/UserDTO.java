@@ -1,6 +1,5 @@
 package dto.userdto;
 
-import dto.DTO;
 import entity.EventEntity;
 import lombok.Builder;
 import lombok.Data;
@@ -14,8 +13,7 @@ import java.util.List;
  */
 @Data
 @Builder
-@EqualsAndHashCode(callSuper = true)
-public class UserDTO extends DTO {
+public class UserDTO {
 
     private String name;
     private List<EventEntity> eventEntities;

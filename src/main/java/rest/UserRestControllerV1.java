@@ -78,11 +78,12 @@ public class UserRestControllerV1 extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        String fromJson = ServletUtil.fromServletInputStream(req.getInputStream());
+        String name = req.getParameter("name");
 
-        UserCreationDTO userDto = gson.fromJson(fromJson, UserCreationDTO.class);
-
-        UserEntity userEntity = UserEntityMapper.userEntity(userDto);
+        UserEntity userEntity = UserEntity
+                .builder()
+                .name(name)
+                .build();
 
         UserIdDTO userIdDto = UserEntityMapper
                 .userIdDto(
