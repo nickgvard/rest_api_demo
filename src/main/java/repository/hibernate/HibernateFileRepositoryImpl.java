@@ -50,12 +50,11 @@ public class HibernateFileRepositoryImpl implements FileRepository {
     }
 
     @Override
-    public FileEntity deleteById(Long id) {
+    public void deleteById(Long id) {
         @Cleanup Session session = HibernateDataBaseAccess.instance().dataBaseAccess();
         session.beginTransaction();
         FileEntity fileEntity = FileEntity.builder().id(id).build();
         session.delete(fileEntity);
         session.getTransaction().commit();
-        return fileEntity;
     }
 }

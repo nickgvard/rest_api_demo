@@ -18,16 +18,14 @@ public class HibernateEventRepositoryImpl implements EventRepository {
     @Override
     public EventEntity getById(Long id) {
         @Cleanup Session session = HibernateDataBaseAccess.instance().dataBaseAccess();
-        EventEntity eventEntity = session.get(EventEntity.class, id);
-        return eventEntity;
+        return session.get(EventEntity.class, id);
     }
 
     @Override
     public List<EventEntity> findAll() {
         @Cleanup Session session = HibernateDataBaseAccess.instance().dataBaseAccess();
         Query<EventEntity> query = session.createQuery("from EventEntity", EventEntity.class);
-        List<EventEntity> events = query.getResultList();
-        return events;
+        return query.getResultList();
     }
 
     @Override
@@ -50,12 +48,11 @@ public class HibernateEventRepositoryImpl implements EventRepository {
     }
 
     @Override
-    public EventEntity deleteById(Long id) {
+    public void deleteById(Long id) {
         @Cleanup Session session = HibernateDataBaseAccess.instance().dataBaseAccess();
         session.beginTransaction();
         EventEntity eventEntity = EventEntity.builder().id(id).build();
         session.delete(eventEntity);
         session.getTransaction().commit();
-        return eventEntity;
     }
 }

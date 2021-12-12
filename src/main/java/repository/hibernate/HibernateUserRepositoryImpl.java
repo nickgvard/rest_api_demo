@@ -50,12 +50,11 @@ public class HibernateUserRepositoryImpl implements UserRepository {
     }
 
     @Override
-    public UserEntity deleteById(Long id) {
+    public void deleteById(Long id) {
         @Cleanup Session session = HibernateDataBaseAccess.instance().dataBaseAccess();
         session.beginTransaction();
         UserEntity userEntity = UserEntity.builder().id(id).build();
         session.delete(userEntity);
         session.getTransaction().commit();
-        return userEntity;
     }
 }

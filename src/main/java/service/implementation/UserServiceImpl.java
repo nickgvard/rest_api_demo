@@ -34,7 +34,7 @@ public class UserServiceImpl implements UserService {
         return userRepository.update(userEntity);
     }
 
-    public UserEntity deleteById(Long id) {
-        return userRepository.deleteById(id);
+    public void deleteById(Long id) {
+        userRepository.deleteById(id);
     }
 }

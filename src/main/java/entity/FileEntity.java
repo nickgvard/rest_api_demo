@@ -1,9 +1,6 @@
 package entity;
 
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 
@@ -16,6 +13,7 @@ import javax.persistence.*;
 @Data
 @Builder
 @NoArgsConstructor
+@AllArgsConstructor
 @ToString
 public class FileEntity {
 

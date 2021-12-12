@@ -1,10 +1,7 @@
 package rest;
 
 import com.google.gson.Gson;
-import dto.eventdto.EventCreationDTO;
-import dto.eventdto.EventDTO;
-import dto.eventdto.EventIdDTO;
-import dto.mapper.EventEntityMapper;
+import dto.EventDTO;
 import entity.EventEntity;
 import service.implementation.EventServiceImpl;
 import util.ServletUtil;
@@ -18,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import static javax.servlet.http.HttpServletResponse.*;
 
@@ -26,8 +24,7 @@ import static javax.servlet.http.HttpServletResponse.*;
  * 07.12.2021
  */
 
-
-@WebServlet(name = "EventRestControllerV1", urlPatterns = "/storage/v1/events/*")
+@WebServlet(name = "EventRestControllerV1", urlPatterns = "/api/v1/events/*")
 public class EventRestControllerV1 extends HttpServlet {
 
     private EventServiceImpl eventService;
@@ -42,6 +39,7 @@ public class EventRestControllerV1 extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
+
         String requestUri = req.getRequestURI();
 
         if (Pattern.compile("/events/(\\d)+$").matcher(requestUri).find()) {
@@ -50,7 +48,7 @@ public class EventRestControllerV1 extends HttpServlet {
 
             Long id = Long.parseLong(pathInfo.substring(1));
 
-            EventDTO eventDto = EventEntityMapper.toEventDto(
+            EventDTO eventDto = EventDTO.toDTO(
                     eventService
                             .getById(id));
 
@@ -64,13 +62,17 @@ public class EventRestControllerV1 extends HttpServlet {
                 resp.setStatus(SC_NO_CONTENT);
         } else if (Pattern.compile("/events(/)*$").matcher(requestUri).find()) {
 
-            List<EventEntity> fileEntities = eventService.findAll();
+            List<EventDTO> events = eventService.findAll()
+                    .stream()
+                    .map(EventDTO::toDTO)
+                    .collect(Collectors.toList());
 
-            String toJson = gson.toJson(fileEntities);
+            String toJson = gson.toJson(events);
 
             resp.setStatus(SC_OK);
             resp.setContentType("application/json");
             resp.getOutputStream().println(toJson);
+
         } else
             resp.setStatus(SC_BAD_REQUEST);
     }
@@ -78,19 +80,21 @@ public class EventRestControllerV1 extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
-        String name = req.getParameter("name");
+        String newName = req.getParameter("name");
 
-        EventEntity eventEntity = EventEntity
+        EventDTO eventDTO = EventDTO
                 .builder()
-                .name(name)
+                .name(newName)
                 .build();
 
-        EventIdDTO eventIdDto = EventEntityMapper
-                .toEventIdDto(
+        eventDTO = EventDTO
+                .toDTO(
                         eventService
-                                .save(eventEntity));
+                                .save(
+                                        EventDTO
+                                                .toEntity(eventDTO)));
 
-        String toJson = gson.toJson(eventIdDto);
+        String toJson = gson.toJson(eventDTO);
 
         resp.setStatus(SC_CREATED);
         resp.setContentType("application/json");
@@ -110,15 +114,14 @@ public class EventRestControllerV1 extends HttpServlet {
 
             String fromJson = ServletUtil.fromServletInputStream(req.getInputStream());
 
-            EventEntity eventEntity = gson.fromJson(fromJson, EventEntity.class);
-            eventEntity.setId(id);
+            EventDTO eventDTO = gson.fromJson(fromJson, EventDTO.class);
+            eventDTO.setId(id);
 
-            EventDTO eventDto = EventEntityMapper
-                    .toEventDto(
-                            eventService
-                                    .update(eventEntity));
+            eventService.update(
+                    EventDTO
+                            .toEntity(eventDTO));
 
-            String toJson = gson.toJson(eventDto);
+            String toJson = gson.toJson(eventDTO);
 
             resp.setStatus(SC_OK);
             resp.setContentType("application/json");
@@ -138,17 +141,10 @@ public class EventRestControllerV1 extends HttpServlet {
 
             Long id = Long.parseLong(pathInfo.substring(1));
 
-            EventEntity eventEntity =
-                    eventService.deleteById(id);
-
-            EventDTO eventDto = EventEntityMapper
-                    .toEventDto(eventEntity);
-
-            String toJson = gson.toJson(eventDto);
+            eventService.deleteById(id);
 
             resp.setStatus(SC_OK);
             resp.setContentType("application/json");
-            resp.getOutputStream().println(toJson);
         } else
             resp.setStatus(SC_BAD_REQUEST);
     }

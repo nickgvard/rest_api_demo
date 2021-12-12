@@ -34,7 +34,7 @@ public class FileServiceImpl implements FileService {
         return fileRepository.update(fileEntity);
     }
 
-    public FileEntity deleteById(Long id) {
-        return fileRepository.getById(id);
+    public void deleteById(Long id) {
+        fileRepository.getById(id);
     }
 }

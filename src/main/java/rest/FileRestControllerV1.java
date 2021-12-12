@@ -1,8 +1,7 @@
 package rest;
 
 import com.google.gson.Gson;
-import dto.filedto.FileDTO;
-import dto.mapper.FileEntityMapper;
+import dto.FileDTO;
 import entity.FileEntity;
 import service.implementation.FileServiceImpl;
 import util.ServletUtil;
@@ -16,6 +15,7 @@ import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.List;
 import java.util.regex.Pattern;
+import java.util.stream.Collectors;
 
 import static javax.servlet.http.HttpServletResponse.*;
 
@@ -24,7 +24,7 @@ import static javax.servlet.http.HttpServletResponse.*;
  * 07.12.2021
  */
 
-@WebServlet(name = "FileRestControllerV1", urlPatterns = "/storage/v1/files/*")
+@WebServlet(name = "FileRestControllerV1", urlPatterns = "/api/v1/files/*")
 public class FileRestControllerV1 extends HttpServlet {
 
     private Gson gson;
@@ -48,9 +48,8 @@ public class FileRestControllerV1 extends HttpServlet {
 
             Long id = Long.parseLong(pathInfo.substring(1));
 
-            FileDTO fileDto = FileEntityMapper.toFileDto(
-                    fileServiceImpl
-                            .getById(id));
+            FileDTO fileDto = FileDTO.toDTO(
+                    fileServiceImpl.getById(id));
 
             if (fileDto != null) {
                 String toJson = gson.toJson(fileDto);
@@ -62,7 +61,10 @@ public class FileRestControllerV1 extends HttpServlet {
                 resp.setStatus(SC_NO_CONTENT);
         } else if (Pattern.compile("/files$").matcher(requestUri).find()) {
 
-            List<FileEntity> fileEntities = fileServiceImpl.findAll();
+            List<FileDTO> fileEntities = fileServiceImpl.findAll()
+                    .stream()
+                    .map(FileDTO::toDTO)
+                    .collect(Collectors.toList());
 
             String toJson = gson.toJson(fileEntities);
 
@@ -78,14 +80,19 @@ public class FileRestControllerV1 extends HttpServlet {
 
         String name = req.getParameter("name");
 
-        FileEntity fileEntity = FileEntity
+        FileDTO fileDTO = FileDTO
                 .builder()
                 .name(name)
                 .build();
 
-        String toJson = gson.toJson(
-                fileServiceImpl
-                        .save(fileEntity));
+        fileDTO = FileDTO
+                .toDTO(
+                        fileServiceImpl
+                                .save(
+                                        FileDTO
+                                                .toEntity(fileDTO)));
+
+        String toJson = gson.toJson(fileDTO);
 
         resp.setStatus(SC_CREATED);
         resp.setContentType("application/json");
@@ -105,15 +112,14 @@ public class FileRestControllerV1 extends HttpServlet {
 
             String fromJson = ServletUtil.fromServletInputStream(req.getInputStream());
 
-            FileEntity fileEntity = gson.fromJson(fromJson, FileEntity.class);
-            fileEntity.setId(id);
+            FileDTO fileDTO = gson.fromJson(fromJson, FileDTO.class);
+            fileDTO.setId(id);
 
-            FileDTO fileDto = FileEntityMapper
-                    .toFileDto(
-                            fileServiceImpl
-                                    .update(fileEntity));
+            fileServiceImpl.update(
+                    FileDTO
+                            .toEntity(fileDTO));
 
-            String toJson = gson.toJson(fileDto);
+            String toJson = gson.toJson(fileDTO);
 
             resp.setStatus(SC_OK);
             resp.setContentType("application/json");
@@ -133,17 +139,10 @@ public class FileRestControllerV1 extends HttpServlet {
 
             Long id = Long.parseLong(pathInfo.substring(1));
 
-            FileEntity fileEntity =
-                    fileServiceImpl.deleteById(id);
-
-            FileDTO fileDto = FileEntityMapper
-                    .toFileDto(fileEntity);
-
-            String toJson = gson.toJson(fileDto);
+            fileServiceImpl.deleteById(id);
 
             resp.setStatus(SC_OK);
             resp.setContentType("application/json");
-            resp.getOutputStream().println(toJson);
         } else
             resp.setStatus(SC_BAD_REQUEST);
     }

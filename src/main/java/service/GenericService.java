@@ -12,5 +12,5 @@ public interface GenericService<T, ID> {
     List<T> findAll();
     T save(T t);
     T update(T t);
-    T deleteById(ID id);
+    void deleteById(ID id);
 }
