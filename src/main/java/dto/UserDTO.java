@@ -1,10 +1,8 @@
 package dto;
 
-import entity.EventEntity;
 import entity.UserEntity;
 import lombok.Builder;
 import lombok.Data;
-import lombok.EqualsAndHashCode;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -21,12 +19,13 @@ public class UserDTO {
     private String name;
     private List<EventDTO> events;
 
+    @SuppressWarnings("ALL")
     public static UserDTO toDTO(UserEntity userEntity) {
         return UserDTO
                 .builder()
-                .id(userEntity.getId())
-                .name(userEntity.getName())
-                .events(userEntity
+                .id(userEntity.getId() == null ? null : userEntity.getId())
+                .name(userEntity.getName() == null ? null : userEntity.getName())
+                .events(userEntity.getEventEntities() == null ? null : userEntity
                         .getEventEntities()
                         .stream()
                         .map(EventDTO::toDTO)
@@ -34,12 +33,13 @@ public class UserDTO {
                 .build();
     }
 
+    @SuppressWarnings("ALL")
     public static UserEntity toEntity(UserDTO userDTO) {
         return UserEntity
                 .builder()
-                .id(userDTO.getId())
-                .name(userDTO.getName())
-                .eventEntities(userDTO
+                .id(userDTO.getId() == null ? null : userDTO.getId())
+                .name(userDTO.getName() == null ? null : userDTO.getName())
+                .eventEntities(userDTO.getEvents() == null ? null : userDTO
                         .getEvents()
                         .stream()
                         .map(EventDTO::toEntity)

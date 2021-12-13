@@ -85,12 +85,12 @@ public class UserRestControllerV1 extends HttpServlet {
                 .name(name)
                 .build();
 
+        UserEntity userEntity = UserDTO.toEntity(userDTO);
+
         userDTO = UserDTO
                 .toDTO(
                         userService
-                                .save(
-                                        UserDTO
-                                                .toEntity(userDTO)));
+                                .save(userEntity));
 
         String toJson = gson.toJson(userDTO);
 
