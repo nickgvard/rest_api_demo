@@ -25,7 +25,7 @@ public class UserEntity {
 
     private String name;
 
-    @OneToMany(fetch = FetchType.LAZY)
+    @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private List<EventEntity> eventEntities;
 }
