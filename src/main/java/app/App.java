@@ -16,9 +16,5 @@ public class App {
         }
     }
 
-    public static void main(String[] args) {
-        System.out.println(System.getProperty("DATABASE_USERNAME"));
-        System.out.println(System.getProperty("DATABASE_URL"));
-        System.out.println(System.getProperty("DATABASE_PASSWORD"));
-    }
+    public static void main(String[] args) { }
 }

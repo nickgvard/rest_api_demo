@@ -18,16 +18,14 @@ public class HibernateFileRepositoryImpl implements FileRepository {
     @Override
     public FileEntity getById(Long id) {
         @Cleanup Session session = HibernateDataBaseAccess.instance().dataBaseAccess();
-        FileEntity fileEntity = session.get(FileEntity.class, id);
-        return fileEntity;
+        return session.get(FileEntity.class, id);
     }
 
     @Override
     public List<FileEntity> findAll() {
         @Cleanup Session session = HibernateDataBaseAccess.instance().dataBaseAccess();
         Query<FileEntity> query = session.createQuery("from FileEntity", FileEntity.class);
-        List<FileEntity> files = query.getResultList();
-        return files;
+        return query.getResultList();
     }
 
     @Override
