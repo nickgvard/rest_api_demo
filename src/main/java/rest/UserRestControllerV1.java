@@ -66,8 +66,7 @@ public class UserRestControllerV1 extends HttpServlet {
                     .map(UserDTO::toDTO)
                     .collect(Collectors.toList());
 
-//            String json = gson.toJson(userEntities);
-            String json = gson.toJson("Users!!!");
+            String json = gson.toJson(userEntities);
 
             resp.setStatus(SC_OK);
             resp.setContentType("application/json");
