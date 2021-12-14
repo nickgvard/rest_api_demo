@@ -40,6 +40,14 @@ public class UserRestControllerV1 extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
 
+        resp.getOutputStream().println(System.getProperty("JDBC_DATABASE_URL"));
+        resp.getOutputStream().println(System.getProperty("JDBC_DATABASE_USERNAME"));
+        resp.getOutputStream().println(System.getProperty("JDBC_DATABASE_PASSWORD"));
+
+        resp.getOutputStream().println(System.getenv("JDBC_DATABASE_URL"));
+        resp.getOutputStream().println(System.getenv("JDBC_DATABASE_USERNAME"));
+        resp.getOutputStream().println(System.getenv("JDBC_DATABASE_PASSWORD"));
+
         String requestUrl = req.getRequestURI();
 
         if (Pattern.compile("/users/\\d+$").matcher(requestUrl).find()) {
