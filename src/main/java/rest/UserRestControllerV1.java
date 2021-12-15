@@ -1,6 +1,8 @@
 package rest;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import dto.UserDTO;
 import entity.UserEntity;
 import service.implementation.UserServiceImpl;
@@ -39,7 +41,6 @@ public class UserRestControllerV1 extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
         String requestUrl = req.getRequestURI();
 
         if (Pattern.compile("/users/\\d+$").matcher(requestUrl).find()) {
@@ -77,7 +78,6 @@ public class UserRestControllerV1 extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
         String name = req.getParameter("name");
 
         UserDTO userDTO = UserDTO
@@ -101,7 +101,6 @@ public class UserRestControllerV1 extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
         String requestUri = req.getRequestURI();
 
         if (Pattern.compile("/users/\\d+$").matcher(requestUri).find()) {
@@ -112,7 +111,7 @@ public class UserRestControllerV1 extends HttpServlet {
 
             String fromJson = ServletUtil.fromServletInputStream(req.getInputStream());
 
-            UserDTO userDTO = gson.fromJson(fromJson, UserDTO.class);
+            UserDTO userDTO = UserDTO.toDTO(fromJson);
             userDTO.setId(id);
 
             userService.update(
@@ -130,7 +129,6 @@ public class UserRestControllerV1 extends HttpServlet {
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
         String requestUri = req.getRequestURI();
 
         if (Pattern.compile("/users/\\d+$").matcher(requestUri).find()) {

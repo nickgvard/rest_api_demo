@@ -18,16 +18,14 @@ public class HibernateUserRepositoryImpl implements UserRepository {
     @Override
     public UserEntity getById(Long id) {
         @Cleanup Session session = HibernateDataBaseAccess.instance().dataBaseAccess();
-        UserEntity userEntity = session.get(UserEntity.class, id);
-        return userEntity;
+        return session.get(UserEntity.class, id);
     }
 
     @Override
     public List<UserEntity> findAll() {
         @Cleanup Session session = HibernateDataBaseAccess.instance().dataBaseAccess();
         Query<UserEntity> query = session.createQuery("from UserEntity", UserEntity.class);
-        List<UserEntity> users = query.getResultList();
-        return users;
+        return query.getResultList();
     }
 
     @Override

@@ -1,8 +1,8 @@
 package rest;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import dto.FileDTO;
-import entity.FileEntity;
 import service.implementation.FileServiceImpl;
 import util.ServletUtil;
 
@@ -28,18 +28,17 @@ import static javax.servlet.http.HttpServletResponse.*;
 public class FileRestControllerV1 extends HttpServlet {
 
     private Gson gson;
-    private FileServiceImpl fileServiceImpl;
+    private FileServiceImpl fileService;
 
     @Override
     public void init(ServletConfig config) throws ServletException {
         super.init(config);
         gson = new Gson();
-        fileServiceImpl = new FileServiceImpl();
+        fileService = new FileServiceImpl();
     }
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
         String requestUri = req.getRequestURI();
 
         if (Pattern.compile("/files/\\d+$").matcher(requestUri).find()) {
@@ -49,7 +48,7 @@ public class FileRestControllerV1 extends HttpServlet {
             Long id = Long.parseLong(pathInfo.substring(1));
 
             FileDTO fileDto = FileDTO.toDTO(
-                    fileServiceImpl.getById(id));
+                    fileService.getById(id));
 
             if (fileDto != null) {
                 String toJson = gson.toJson(fileDto);
@@ -59,9 +58,9 @@ public class FileRestControllerV1 extends HttpServlet {
                 resp.getOutputStream().println(toJson);
             } else
                 resp.setStatus(SC_NO_CONTENT);
-        } else if (Pattern.compile("/files$").matcher(requestUri).find()) {
+        } else if (Pattern.compile("/files(/)*$").matcher(requestUri).find()) {
 
-            List<FileDTO> fileEntities = fileServiceImpl.findAll()
+            List<FileDTO> fileEntities = fileService.findAll()
                     .stream()
                     .map(FileDTO::toDTO)
                     .collect(Collectors.toList());
@@ -77,7 +76,6 @@ public class FileRestControllerV1 extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
         String name = req.getParameter("name");
 
         FileDTO fileDTO = FileDTO
@@ -87,7 +85,7 @@ public class FileRestControllerV1 extends HttpServlet {
 
         fileDTO = FileDTO
                 .toDTO(
-                        fileServiceImpl
+                        fileService
                                 .save(
                                         FileDTO
                                                 .toEntity(fileDTO)));
@@ -101,7 +99,6 @@ public class FileRestControllerV1 extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
         String requestUri = req.getRequestURI();
 
         if (Pattern.compile("/files/\\d+$").matcher(requestUri).find()) {
@@ -112,10 +109,10 @@ public class FileRestControllerV1 extends HttpServlet {
 
             String fromJson = ServletUtil.fromServletInputStream(req.getInputStream());
 
-            FileDTO fileDTO = gson.fromJson(fromJson, FileDTO.class);
+            FileDTO fileDTO = FileDTO.toDTO(fromJson);
             fileDTO.setId(id);
 
-            fileServiceImpl.update(
+            fileService.update(
                     FileDTO
                             .toEntity(fileDTO));
 
@@ -130,7 +127,6 @@ public class FileRestControllerV1 extends HttpServlet {
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
         String requestUri = req.getRequestURI();
 
         if (Pattern.compile("/files/\\d+$").matcher(requestUri).find()) {
@@ -139,7 +135,7 @@ public class FileRestControllerV1 extends HttpServlet {
 
             Long id = Long.parseLong(pathInfo.substring(1));
 
-            fileServiceImpl.deleteById(id);
+            fileService.deleteById(id);
 
             resp.setStatus(SC_OK);
             resp.setContentType("application/json");

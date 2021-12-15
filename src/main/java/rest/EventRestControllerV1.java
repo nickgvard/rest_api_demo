@@ -1,6 +1,7 @@
 package rest;
 
 import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import dto.EventDTO;
 import entity.EventEntity;
 import service.implementation.EventServiceImpl;
@@ -39,7 +40,6 @@ public class EventRestControllerV1 extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
         String requestUri = req.getRequestURI();
 
         if (Pattern.compile("/events/(\\d)+$").matcher(requestUri).find()) {
@@ -79,7 +79,6 @@ public class EventRestControllerV1 extends HttpServlet {
 
     @Override
     protected void doPost(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
         String newName = req.getParameter("name");
 
         EventDTO eventDTO = EventDTO
@@ -103,7 +102,6 @@ public class EventRestControllerV1 extends HttpServlet {
 
     @Override
     protected void doPut(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
         String requestUri = req.getRequestURI();
 
         if (Pattern.compile("/events/(\\d)+$").matcher(requestUri).find()) {
@@ -114,7 +112,7 @@ public class EventRestControllerV1 extends HttpServlet {
 
             String fromJson = ServletUtil.fromServletInputStream(req.getInputStream());
 
-            EventDTO eventDTO = gson.fromJson(fromJson, EventDTO.class);
+            EventDTO eventDTO = EventDTO.toDTO(fromJson);
             eventDTO.setId(id);
 
             eventService.update(
@@ -132,7 +130,6 @@ public class EventRestControllerV1 extends HttpServlet {
 
     @Override
     protected void doDelete(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-
         String requestUri = req.getRequestURI();
 
         if (Pattern.compile("/events/(\\d)+$").matcher(requestUri).find()) {

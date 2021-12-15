@@ -1,5 +1,7 @@
 package dto;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import entity.FileEntity;
 import lombok.Builder;
 import lombok.Data;
@@ -22,6 +24,15 @@ public class FileDTO {
                 .builder()
                 .id(fileEntity.getId() == null ? null : fileEntity.getId())
                 .name(fileEntity.getName() == null ? null : fileEntity.getName())
+                .build();
+    }
+
+    public static FileDTO toDTO(String fromJson) {
+        JsonObject jsonObject = new Gson().fromJson(fromJson, JsonObject.class);
+        return FileDTO
+                .builder()
+                .name(jsonObject.get("name").toString()
+                        .replaceAll("\"+", ""))
                 .build();
     }
 

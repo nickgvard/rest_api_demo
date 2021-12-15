@@ -1,5 +1,7 @@
 package dto;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonObject;
 import entity.UserEntity;
 import lombok.Builder;
 import lombok.Data;
@@ -30,6 +32,15 @@ public class UserDTO {
                         .stream()
                         .map(EventDTO::toDTO)
                         .collect(Collectors.toList()))
+                .build();
+    }
+
+    public static UserDTO toDTO(String fromJson) {
+        JsonObject jsonObject = new Gson().fromJson(fromJson, JsonObject.class);
+        return UserDTO
+                .builder()
+                .name(jsonObject.get("name").toString()
+                        .replaceAll("\"+", ""))
                 .build();
     }
 
