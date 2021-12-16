@@ -23,7 +23,7 @@ public class UserDTO {
 
     @SuppressWarnings("ALL")
     public static UserDTO toDTO(UserEntity userEntity) {
-        return UserDTO
+        return (userEntity == null) ? null : UserDTO
                 .builder()
                 .id(userEntity.getId() == null ? null : userEntity.getId())
                 .name(userEntity.getName() == null ? null : userEntity.getName())
@@ -46,7 +46,7 @@ public class UserDTO {
 
     @SuppressWarnings("ALL")
     public static UserEntity toEntity(UserDTO userDTO) {
-        return UserEntity
+        return (userDTO == null) ? null : UserEntity
                 .builder()
                 .id(userDTO.getId() == null ? null : userDTO.getId())
                 .name(userDTO.getName() == null ? null : userDTO.getName())

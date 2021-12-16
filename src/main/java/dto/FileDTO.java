@@ -8,7 +8,7 @@ import lombok.Data;
 
 /**
  * @author Nikita Gvardeev 10.12.2021
- * email gvardeev@po-korf.ru
+ * 09.12.2021
  */
 
 @Data
@@ -20,7 +20,7 @@ public class FileDTO {
 
     @SuppressWarnings("ALL")
     public static FileDTO toDTO(FileEntity fileEntity) {
-        return FileDTO
+        return (fileEntity == null) ? null : FileDTO
                 .builder()
                 .id(fileEntity.getId() == null ? null : fileEntity.getId())
                 .name(fileEntity.getName() == null ? null : fileEntity.getName())
@@ -38,7 +38,7 @@ public class FileDTO {
 
     @SuppressWarnings("ALL")
     public static FileEntity toEntity(FileDTO fileDTO) {
-        return FileEntity
+        return (fileDTO == null) ? null : FileEntity
                 .builder()
                 .id(fileDTO.getId() == null ? null : fileDTO.getId())
                 .name(fileDTO.getName() == null ? null : fileDTO.getName())

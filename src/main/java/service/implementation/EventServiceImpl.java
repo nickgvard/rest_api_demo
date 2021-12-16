@@ -7,8 +7,8 @@ import service.EventService;
 import java.util.List;
 
 /**
- * @author Nikita Gvardeev 10.12.2021
- * email gvardeev@po-korf.ru
+ * @author Nikita Gvardeev
+ * 10.12.2021
  */
 public class EventServiceImpl implements EventService {
 

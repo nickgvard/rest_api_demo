@@ -5,8 +5,8 @@ import java.io.IOException;
 import java.io.InputStream;
 
 /**
- * @author Nikita Gvardeev 09.12.2021
- * email gvardeev@po-korf.ru
+ * @author Nikita Gvardeev
+ * 09.12.2021
  */
 public class ServletUtil {
 

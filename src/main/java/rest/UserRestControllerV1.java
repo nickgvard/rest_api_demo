@@ -1,10 +1,7 @@
 package rest;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
 import dto.UserDTO;
-import entity.UserEntity;
 import service.implementation.UserServiceImpl;
 import util.ServletUtil;
 

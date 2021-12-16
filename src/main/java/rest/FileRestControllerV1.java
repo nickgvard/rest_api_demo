@@ -1,7 +1,6 @@
 package rest;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import dto.FileDTO;
 import service.implementation.FileServiceImpl;
 import util.ServletUtil;

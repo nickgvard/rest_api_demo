@@ -1,9 +1,7 @@
 package rest;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonObject;
 import dto.EventDTO;
-import entity.EventEntity;
 import service.implementation.EventServiceImpl;
 import util.ServletUtil;
 

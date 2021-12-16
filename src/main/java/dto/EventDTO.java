@@ -21,7 +21,7 @@ public class EventDTO {
 
     @SuppressWarnings("ALL")
     public static EventDTO toDTO(EventEntity eventEntity) {
-        return EventDTO
+        return (eventEntity == null) ? null : EventDTO
                 .builder()
                 .id(eventEntity.getId() == null ? null : eventEntity.getId())
                 .name(eventEntity.getName() == null ? null : eventEntity.getName())
@@ -44,7 +44,7 @@ public class EventDTO {
 
     @SuppressWarnings("ALL")
     public static EventEntity toEntity(EventDTO eventDTO) {
-        return EventEntity
+        return (eventDTO == null) ? null : EventEntity
                 .builder()
                 .id(eventDTO.getId() == null ? null : eventDTO.getId())
                 .name(eventDTO.getName() == null ? null : eventDTO.getName())

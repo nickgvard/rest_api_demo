@@ -7,7 +7,7 @@ import java.util.List;
 
 /**
  * @author Nikita Gvardeev 07.12.2021
- * email gvardeev@po-korf.ru
+ * 09.12.2021
  */
 
 @Entity

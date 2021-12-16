@@ -11,7 +11,7 @@ import java.util.List;
 
 /**
  * @author Nikita Gvardeev 10.12.2021
- * email gvardeev@po-korf.ru
+ * 09.12.2021
  */
 public class HibernateEventRepositoryImpl implements EventRepository {
 
