@@ -4,6 +4,7 @@ import lombok.*;
 
 import javax.persistence.*;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * @author Nikita Gvardeev 07.12.2021
@@ -11,7 +12,7 @@ import java.util.List;
  */
 
 @Entity
-@Table(name = "users", schema = "local_db")
+@Table(name = "users", schema = "li0kf6qceun7hant")
 @Data
 @Builder
 @NoArgsConstructor
@@ -28,4 +29,17 @@ public class UserEntity {
     @OneToMany(fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private List<EventEntity> eventEntities;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        UserEntity that = (UserEntity) o;
+        return id.equals(that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

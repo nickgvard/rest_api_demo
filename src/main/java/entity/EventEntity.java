@@ -3,6 +3,7 @@ package entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.Objects;
 
 /**
  * @author Nikita Gvardeev 07.12.2021
@@ -10,7 +11,7 @@ import javax.persistence.*;
  */
 
 @Entity
-@Table(name = "events", schema = "local_db")
+@Table(name = "events", schema = "li0kf6qceun7hant")
 @Data
 @Builder
 @NoArgsConstructor
@@ -24,6 +25,20 @@ public class EventEntity {
 
     private String name;
 
-    @OneToOne(mappedBy = "eventEntity", fetch = FetchType.EAGER)
+    @ManyToOne(fetch = FetchType.EAGER)
+    @JoinColumn(name = "file_id", referencedColumnName = "id")
     private FileEntity fileEntity;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        EventEntity that = (EventEntity) o;
+        return id.equals(that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

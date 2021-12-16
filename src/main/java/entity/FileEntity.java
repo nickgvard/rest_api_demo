@@ -3,13 +3,15 @@ package entity;
 import lombok.*;
 
 import javax.persistence.*;
+import java.util.List;
+import java.util.Objects;
 
 /**
  * @author Nikita Gvardeev 07.12.2021
  * 09.12.2021
  */
 @Entity
-@Table(name = "files", schema = "local_db")
+@Table(name = "files", schema = "li0kf6qceun7hant")
 @Data
 @Builder
 @NoArgsConstructor
@@ -23,8 +25,20 @@ public class FileEntity {
 
     private String name;
 
-    @OneToOne(fetch = FetchType.EAGER)
-    @JoinColumn(name = "id", referencedColumnName = "id")
+    @OneToMany(mappedBy = "fileEntity", fetch = FetchType.EAGER)
     @ToString.Exclude
-    private EventEntity eventEntity;
+    private List<EventEntity> eventEntity;
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        FileEntity that = (FileEntity) o;
+        return id.equals(that.id);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id);
+    }
 }

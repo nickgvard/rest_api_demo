@@ -28,7 +28,7 @@ public class EventDTO {
                 .fileDTO(eventEntity.getFileEntity() == null ? null : FileDTO
                         .builder()
                         .id(eventEntity.getFileEntity() == null && eventEntity.getFileEntity().getId() == null ? null : eventEntity.getFileEntity().getId())
-                        .name(eventEntity.getFileEntity() == null && eventEntity.getFileEntity().getName() == null ? null : eventEntity.getName())
+                        .name(eventEntity.getFileEntity() == null && eventEntity.getFileEntity().getName() == null ? null : eventEntity.getFileEntity().getName())
                         .build())
                 .build();
     }
